@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 def download(
     url: str, query_parameters: dict | None = None, download_dir: Path | None = None
-) -> None:
+) -> Path:
     try:
         response = requests.get(
             url, stream=True, timeout=TIMEOUT, params=query_parameters
@@ -37,6 +37,7 @@ def download(
         for chunk in response.iter_content(chunk_size=10 * 1024):
             file.write(chunk)
     log.info(f"Downloaded {file_name}")
+    return Path(file_name)
 
 
 def _get_filename_from_url(url: str) -> str:
