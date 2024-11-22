@@ -5,7 +5,7 @@ import pytest
 import requests
 
 from puddle.exceptions import DownloadError
-from puddle.puddle import TIMEOUT, download, get_filename_from_url
+from puddle.puddle import TIMEOUT, _get_filename_from_url, download
 
 TEST_URL = "test_url/some_file.txt"
 
@@ -65,7 +65,7 @@ def test_download_happy_path(mocked_get, http_ok):
 
     # Given
     mocked_get.return_value = http_ok["response"]
-    filename = get_filename_from_url(TEST_URL)
+    filename = _get_filename_from_url(TEST_URL)
     content = http_ok["content"]
     with patch.object(Path, "open", mocked_open):
         # When
@@ -111,7 +111,7 @@ def test_download_with_path_option(mocked_get):
     # Given
     mocked_get.return_value = http_ok_with_filename()["response"]
     download_directory = Path("data")
-    filename = get_filename_from_url(TEST_URL)
+    filename = _get_filename_from_url(TEST_URL)
     with patch.object(Path, "open", mocked_open), patch.object(Path, "mkdir"):
         # When
         download(TEST_URL, download_dir=download_directory)
@@ -193,7 +193,7 @@ def test_download_file_with_http_error(mocked_get, mocked_open, http_response):
 )
 def test_download_auto_file_naming(url):
     # When
-    result = get_filename_from_url(url)
+    result = _get_filename_from_url(url)
 
     # Then
     assert result == "b.pdf"
