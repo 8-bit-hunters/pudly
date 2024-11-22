@@ -1,3 +1,4 @@
+from pathlib import Path, PosixPath
 from unittest.mock import create_autospec, mock_open, patch
 
 import pytest
@@ -52,27 +53,36 @@ def http_ok_with_filename():
         pytest.param(http_ok_with_filename(), id="with_filename"),
     ],
 )
-@patch("puddle.puddle.open", new_callable=mock_open)
 @patch("puddle.puddle.requests.get")
-def test_download_happy_path(mocked_get, mocked_open, http_ok):
+def test_download_happy_path(mocked_get, http_ok):
+    # use a function to mock `open()`,
+    # because functions are bound when accessed on instances of `Path`.
+    # https://stackoverflow.com/questions/55165313/mock-test-calls-to-path-open
+    opener = mock_open()
+
+    def mocked_open(self, *args, **kwargs):
+        return opener(self, *args, **kwargs)
+
     # Given
     mocked_get.return_value = http_ok["response"]
     filename = get_filename_from_url(TEST_URL)
     content = http_ok["content"]
-
-    # When
-    download(TEST_URL)
+    with patch.object(Path, "open", mocked_open):
+        # When
+        download(TEST_URL)
 
     # Then
     mocked_get.assert_called_once_with(
         TEST_URL, stream=True, timeout=TIMEOUT, params=None
     )
-    mocked_open.assert_called_once_with(filename, mode="wb")
+    assert opener.call_args.args[0] == PosixPath(filename)
+    assert opener.call_args.args[1] == "wb"
     for index, chunk in enumerate(content):
-        assert mocked_open().write.call_args_list[index].args[0] == chunk
+        assert opener.return_value.write.call_args_list[index].args[0] == chunk
+        print(index, chunk)
 
 
-@patch("puddle.puddle.open", new_callable=mock_open)
+@patch("puddle.puddle.Path.open", new_callable=mock_open)
 @patch("puddle.puddle.requests.get")
 def test_download_with_query_paramters(mocked_get, mocked_open):
     # Given
