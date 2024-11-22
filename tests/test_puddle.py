@@ -69,7 +69,7 @@ def test_download_happy_path(mocked_get, http_ok):
     content = http_ok["content"]
     with patch.object(Path, "open", mocked_open):
         # When
-        download(TEST_URL)
+        result = download(TEST_URL)
 
     # Then
     mocked_get.assert_called_once_with(
@@ -80,6 +80,7 @@ def test_download_happy_path(mocked_get, http_ok):
     for index, chunk in enumerate(content):
         assert opener.return_value.write.call_args_list[index].args[0] == chunk
         print(index, chunk)
+    assert result == Path(filename)
 
 
 @patch("puddle.puddle.Path.open", new_callable=mock_open)
@@ -114,10 +115,11 @@ def test_download_with_path_option(mocked_get):
     filename = _get_filename_from_url(TEST_URL)
     with patch.object(Path, "open", mocked_open), patch.object(Path, "mkdir"):
         # When
-        download(TEST_URL, download_dir=download_directory)
+        result = download(TEST_URL, download_dir=download_directory)
 
     # Then
     assert str(opener.call_args.args[0]) == (download_directory / filename).as_posix()
+    assert result == (download_directory / filename)
 
 
 @patch("puddle.puddle.open", new_callable=mock_open)
