@@ -15,6 +15,7 @@ def http_ok_without_content_disposition():
     response.ok = True
     content = ["chunk1", "chunk2", "chunk3"]
     response.iter_content.return_value = content
+    response.url = ""
     response.headers = {}
     return {"response": response, "content": content}
 
@@ -25,6 +26,7 @@ def http_ok_without_filename():
     response.ok = True
     content = ["chunk1", "chunk2", "chunk3"]
     response.iter_content.return_value = content
+    response.url = ""
     response.headers = {"content-disposition": "attachment"}
     return {"response": response, "content": content}
 
@@ -35,6 +37,7 @@ def http_ok_with_filename():
     response.ok = True
     content = ["chunk1", "chunk2", "chunk3"]
     response.iter_content.return_value = content
+    response.url = ""
     response.headers = {"content-disposition": "filename=some_file.txt"}
     return {"response": response, "content": content}
 
@@ -61,10 +64,28 @@ def test_download_happy_path(mocked_get, mocked_open, http_ok):
     download(TEST_URL)
 
     # Then
-    mocked_get.assert_called_once_with(TEST_URL, stream=True, timeout=TIMEOUT)
+    mocked_get.assert_called_once_with(
+        TEST_URL, stream=True, timeout=TIMEOUT, params=None
+    )
     mocked_open.assert_called_once_with(filename, mode="wb")
     for index, chunk in enumerate(content):
         assert mocked_open().write.call_args_list[index].args[0] == chunk
+
+
+@patch("puddle.puddle.open", new_callable=mock_open)
+@patch("puddle.puddle.requests.get")
+def test_download_with_query_paramters(mocked_get, mocked_open):
+    # Given
+    mocked_get.return_value = http_ok_with_filename()["response"]
+    query_paramters = {"key": "value"}
+
+    # When
+    download(TEST_URL, query_paramters)
+
+    # Then
+    mocked_get.assert_called_once_with(
+        TEST_URL, stream=True, timeout=TIMEOUT, params=query_paramters
+    )
 
 
 @patch("puddle.puddle.open", new_callable=mock_open)
@@ -75,7 +96,9 @@ def test_download_exception_during_request(mocked_get, mocked_open):
         download(TEST_URL)
 
     # Then
-    mocked_get.assert_called_once_with(TEST_URL, stream=True, timeout=TIMEOUT)
+    mocked_get.assert_called_once_with(
+        TEST_URL, stream=True, timeout=TIMEOUT, params=None
+    )
     mocked_open.assert_not_called()
 
 
@@ -120,7 +143,9 @@ def test_download_file_with_http_error(mocked_get, mocked_open, http_response):
         download(TEST_URL)
 
     # Then
-    mocked_get.assert_called_once_with(TEST_URL, stream=True, timeout=TIMEOUT)
+    mocked_get.assert_called_once_with(
+        TEST_URL, stream=True, timeout=TIMEOUT, params=None
+    )
     mocked_open.assert_not_called()
 
 

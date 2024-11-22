@@ -9,13 +9,16 @@ TIMEOUT = 10
 log = logging.getLogger(__name__)
 
 
-def download(url: str) -> None:
-    log.info(f"Start download from {url}")
+def download(url: str, query_parameters: dict | None = None) -> None:
     try:
-        response = requests.get(url, stream=True, timeout=TIMEOUT)
+        response = requests.get(
+            url, stream=True, timeout=TIMEOUT, params=query_parameters
+        )
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         raise DownloadError from e
+
+    log.info(f"Start download from {response.url}")
 
     try:
         file_name = get_filename_from_response(response)
@@ -23,7 +26,7 @@ def download(url: str) -> None:
         file_name = get_filename_from_url(url)
 
     log.debug(f"File will be saved as {file_name}")
-    with open(file_name, mode="wb") as file:
+    with open(file_name, mode="wb") as file:  # noqa: PTH123
         for chunk in response.iter_content(chunk_size=10 * 1024):
             file.write(chunk)
     log.info(f"Downloaded {file_name}")
