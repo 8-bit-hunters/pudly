@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 import requests
 
@@ -21,12 +22,12 @@ def download(url: str, query_parameters: dict | None = None) -> None:
     log.info(f"Start download from {response.url}")
 
     try:
-        file_name = get_filename_from_response(response)
+        file_name = Path(get_filename_from_response(response))
     except (IndexError, KeyError):
-        file_name = get_filename_from_url(url)
+        file_name = Path(get_filename_from_url(url))
 
     log.debug(f"File will be saved as {file_name}")
-    with open(file_name, mode="wb") as file:  # noqa: PTH123
+    with file_name.open("wb") as file:
         for chunk in response.iter_content(chunk_size=10 * 1024):
             file.write(chunk)
     log.info(f"Downloaded {file_name}")
