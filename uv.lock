@@ -437,6 +437,35 @@ wheels = [
 ]
 
 [[package]]
+name = "puddle"
+version = "0.0.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "requests" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "mkdocs-material" },
+    { name = "pre-commit" },
+    { name = "pytest" },
+    { name = "python-semantic-release" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "requests", specifier = ">=2.32.3" }]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mkdocs-material", specifier = ">=9.5.45" },
+    { name = "pre-commit", specifier = ">=4.0.1" },
+    { name = "pytest", specifier = ">=8.3.3" },
+    { name = "python-semantic-release", specifier = ">=9.14.0" },
+    { name = "ruff", specifier = ">=0.7.4" },
+]
+
+[[package]]
 name = "pydantic"
 version = "2.10.1"
 source = { registry = "https://pypi.org/simple" }
@@ -572,31 +601,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/71/19/72d0fb90df1b20b4623a99ddd9a454bfba02b832e85a3e27ab57ec38f715/python_semantic_release-9.14.0.tar.gz", hash = "sha256:5b69a626458bfb50686d27d9713160eb2bf9897b0c17985f1c68d7316b8e07b6", size = 233999 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c4/8f/86c618d7df34d8a45b37b867bb7cdd0447ee142e902093f742546b97f1f0/python_semantic_release-9.14.0-py3-none-any.whl", hash = "sha256:f089a6ad976e909d5f87015e9f541f9fd503d3db41653efaf0157d874902e519", size = 107682 },
-]
-
-[[package]]
-name = "python-template"
-version = "0.1.0"
-source = { virtual = "." }
-
-[package.dev-dependencies]
-dev = [
-    { name = "mkdocs-material" },
-    { name = "pre-commit" },
-    { name = "pytest" },
-    { name = "python-semantic-release" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "mkdocs-material", specifier = ">=9.5.45" },
-    { name = "pre-commit", specifier = ">=4.0.1" },
-    { name = "pytest", specifier = ">=8.3.3" },
-    { name = "python-semantic-release", specifier = ">=9.14.0" },
-    { name = "ruff", specifier = ">=0.7.4" },
 ]
 
 [[package]]
