@@ -1,7 +1,10 @@
 [project]
-name = "python-template"
+name = "puddle"
 version = "0.0.0"
 description = "Add your description here"
+authors = [
+    { name = "Kristof Kovacs", email = "kristof.kovacs1996@gmail.com" }
+]
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
