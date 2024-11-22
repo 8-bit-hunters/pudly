@@ -24,9 +24,9 @@ def download(
     log.info(f"Start download from {response.url}")
 
     try:
-        file_name = Path(get_filename_from_response(response))
+        file_name = Path(_get_filename_from_response(response))
     except (IndexError, KeyError):
-        file_name = Path(get_filename_from_url(url))
+        file_name = Path(_get_filename_from_url(url))
 
     if download_dir:
         download_dir.mkdir(parents=True, exist_ok=True)
@@ -39,13 +39,13 @@ def download(
     log.info(f"Downloaded {file_name}")
 
 
-def get_filename_from_url(url: str) -> str:
+def _get_filename_from_url(url: str) -> str:
     fragment_removed = url.split("#")[0]
     query_string_removed = fragment_removed.split("?")[0]
     scheme_removed = query_string_removed.split("://")[-1].split(":")[-1]
     return scheme_removed.split("/")[-1]
 
 
-def get_filename_from_response(response: requests.Response) -> str:
+def _get_filename_from_response(response: requests.Response) -> str:
     content_disposition = response.headers["content-disposition"]
     return content_disposition.split("filename=")[1]
