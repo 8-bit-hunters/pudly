@@ -98,6 +98,28 @@ def test_download_with_query_paramters(mocked_get, mocked_open):
     )
 
 
+@patch("puddle.puddle.requests.get")
+def test_download_with_path_option(mocked_get):
+    # use a function to mock `open()`,
+    # because functions are bound when accessed on instances of `Path`.
+    # https://stackoverflow.com/questions/55165313/mock-test-calls-to-path-open
+    opener = mock_open()
+
+    def mocked_open(self, *args, **kwargs):
+        return opener(self, *args, **kwargs)
+
+    # Given
+    mocked_get.return_value = http_ok_with_filename()["response"]
+    download_directory = Path("data")
+    filename = get_filename_from_url(TEST_URL)
+    with patch.object(Path, "open", mocked_open), patch.object(Path, "mkdir"):
+        # When
+        download(TEST_URL, download_dir=download_directory)
+
+    # Then
+    assert str(opener.call_args.args[0]) == (download_directory / filename).as_posix()
+
+
 @patch("puddle.puddle.open", new_callable=mock_open)
 @patch("puddle.puddle.requests.get", side_effect=requests.exceptions.RequestException)
 def test_download_exception_during_request(mocked_get, mocked_open):

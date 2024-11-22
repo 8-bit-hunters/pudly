@@ -10,7 +10,9 @@ TIMEOUT = 10
 log = logging.getLogger(__name__)
 
 
-def download(url: str, query_parameters: dict | None = None) -> None:
+def download(
+    url: str, query_parameters: dict | None = None, download_dir: Path | None = None
+) -> None:
     try:
         response = requests.get(
             url, stream=True, timeout=TIMEOUT, params=query_parameters
@@ -25,6 +27,10 @@ def download(url: str, query_parameters: dict | None = None) -> None:
         file_name = Path(get_filename_from_response(response))
     except (IndexError, KeyError):
         file_name = Path(get_filename_from_url(url))
+
+    if download_dir:
+        download_dir.mkdir(parents=True, exist_ok=True)
+        file_name = download_dir / file_name
 
     log.debug(f"File will be saved as {file_name}")
     with file_name.open("wb") as file:
