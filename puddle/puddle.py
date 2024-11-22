@@ -5,6 +5,8 @@ import requests
 
 from puddle.exceptions import DownloadError
 
+DOWNLOAD_CHUNK = 25 * 1024 * 1024  # MB
+
 TIMEOUT = 10
 
 log = logging.getLogger(__name__)
@@ -37,7 +39,7 @@ def download(
     log.debug(f"File will be saved as {file_name}")
     with file_name.open("wb") as file:
         downloaded_size = 0
-        for chunk in response.iter_content(chunk_size=10 * 1024):
+        for chunk in response.iter_content(chunk_size=DOWNLOAD_CHUNK):
             downloaded_size += len(chunk)
             log.debug(f"Downloaded {downloaded_size} Bytes")
             file.write(chunk)
