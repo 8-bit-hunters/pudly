@@ -7,6 +7,11 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.12"
+
+[project.urls]
+Homepage = "https://github.com/8-bit-hunters/pudly"
+Documentation = "https://8-bit-hunters.github.io/pudly/"
+
 dependencies = [
     "requests>=2.32.3",
 ]
