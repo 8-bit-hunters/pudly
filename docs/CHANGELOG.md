@@ -38,6 +38,9 @@
 
 ### Other
 
+- :construction_worker: Only publish to PyPi when release is created
+  ([`4737f32`](https://github.com/8-bit-hunters/pudly/commit/4737f32329f4638600fe83bf3910212a05f9c8f4))
+
 - :green_heart: Fix build failure
   ([`6f6bac5`](https://github.com/8-bit-hunters/pudly/commit/6f6bac52d934f441a2fb53e9805eda528ef87838))
 
