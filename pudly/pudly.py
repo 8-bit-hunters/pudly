@@ -15,7 +15,18 @@ log = logging.getLogger(__name__)
 
 
 class DownloadedFile:
+    """
+    Represents a file downloaded from a URL.
+    """
+
     def __init__(self, path: Path, total_size: int) -> None:
+        """
+        Initialise a DownloadedFile object.
+
+        Args:
+            path: The path of the downloaded file.
+            total_size: The total size of the downloaded file from download information.
+        """
         self._path = path
         self._total_size = total_size
 
@@ -24,14 +35,37 @@ class DownloadedFile:
         return self._path
 
     def total_size_in_bytes(self) -> int:
+        """
+        Return the total size in bytes according to download information.
+
+        Returns:
+            The total size in bytes.
+        """
         return self._total_size
 
     def size_is_correct(self) -> bool:
+        """
+        Compare the size of the file to the total size according to
+        download information.
+
+        Returns:
+             True if the size is correct, False otherwise.
+        """
         return self.path.stat().st_size == self._total_size
 
 
 class FileToDownload:
+    """
+    Represents a file to be downloaded from a URL.
+    """
+
     def __init__(self, response: requests.Response) -> None:
+        """
+        Initialise a FileToDownload object
+
+        Args:
+            response: The response object from the requests to a URL.
+        """
         self._total_size = int(response.headers.get("content-length", 0))
         self._connection = response
         self._url = self._connection.url
@@ -59,6 +93,15 @@ class FileToDownload:
         self._download_dir = path
 
     def download(self, download_chunk_size: int) -> DownloadedFile:
+        """
+        Download the file from the URL.
+
+        Args:
+            download_chunk_size: The size of a fragment in bytes during download.
+
+        Returns:
+             The downloaded file object.
+        """
         self._download_dir.mkdir(parents=True, exist_ok=True)
         full_path = self._download_dir / self._name
         with open(full_path, mode="wb") as f:  # noqa: PTH123
@@ -85,6 +128,20 @@ class FileToDownload:
 def download(
     url: str, query_parameters: dict | None = None, download_dir: Path | None = None
 ) -> Path:
+    """
+    Download the file from the URL.
+
+    Args:
+        url: The URL to download from.
+        query_parameters: Parameters to pass to the URL.
+        download_dir: The directory to download the file to.
+
+    Returns:
+         The path of the downloaded file.
+
+    Raises:
+        DownloadError: If the download fails.
+    """
     try:
         response = requests.get(
             url, stream=True, timeout=TIMEOUT_S, params=query_parameters
@@ -117,6 +174,18 @@ def download_files_concurrently(
     download_dir: Path | None = None,
     max_workers: int = 5,
 ) -> list[Path]:
+    """
+    Download files from a list of URLs.
+
+    Args:
+        url_list: The list of URLs to download.
+        query_parameters: The parameters to pass to the URLs.
+        download_dir: The directory to download the files to.
+        max_workers: The maximum number of concurrent downloads.
+
+    Returns:
+         The list of paths to the downloaded files.
+    """
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = [
             executor.submit(
