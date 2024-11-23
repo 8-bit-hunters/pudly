@@ -1,11 +1,12 @@
-from pathlib import Path, PosixPath
+from pathlib import Path
+from typing import Any
 from unittest.mock import create_autospec, mock_open, patch
 
 import pytest
 import requests
 
 from puddle.exceptions import DownloadError
-from puddle.puddle import TIMEOUT, _get_filename_from_url, download
+from puddle.puddle import TIMEOUT_S, _get_filename_from_url, download
 
 TEST_URL = "test_url/some_file.txt"
 
@@ -44,7 +45,7 @@ def http_ok_with_filename():
 
 
 @pytest.mark.parametrize(
-    "http_ok",
+    "http_ok_variant",
     [
         pytest.param(
             http_ok_without_content_disposition(), id="without_content_disposition"
@@ -55,82 +56,96 @@ def http_ok_with_filename():
 )
 @patch("puddle.puddle._is_file_size_correct", return_value=True)
 @patch("puddle.puddle.requests.get")
-def test_download_happy_path(mocked_get, correct_file_size, http_ok):
+def test_download_happy_path(request, correct_file_size, http_ok_variant):
     # use a function to mock `open()`,
     # because functions are bound when accessed on instances of `Path`.
     # https://stackoverflow.com/questions/55165313/mock-test-calls-to-path-open
-    opener = mock_open()
+    file_open = mock_open()
 
     def mocked_open(self, *args, **kwargs):
-        return opener(self, *args, **kwargs)
+        return file_open(self, *args, **kwargs)
 
-    # Given
-    mocked_get.return_value = http_ok["response"]
-    filename = _get_filename_from_url(TEST_URL)
-    content = http_ok["content"]
+    def object_called_open() -> str:
+        return str(file_open.call_args.args[0])
+
+    def file_open_mode() -> str:
+        return file_open.call_args.args[1]
+
+    def file_write_chunk(index: int) -> Any:
+        return file_open.return_value.write.call_args_list[index].args[0]
+
     with patch.object(Path, "open", mocked_open):
+        # Given
+        request.return_value = http_ok_variant["response"]
+        filename = _get_filename_from_url(TEST_URL)
+        content = http_ok_variant["content"]
+
         # When
         result = download(TEST_URL)
 
     # Then
-    mocked_get.assert_called_once_with(
-        TEST_URL, stream=True, timeout=TIMEOUT, params=None
+    request.assert_called_once_with(
+        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None
     )
-    assert opener.call_args.args[0] == PosixPath(filename)
-    assert opener.call_args.args[1] == "wb"
+    assert object_called_open() == filename
+    assert file_open_mode() == "wb"
     for index, chunk in enumerate(content):
-        assert opener.return_value.write.call_args_list[index].args[0] == chunk
+        assert file_write_chunk(index) == chunk
     assert result == Path(filename)
 
 
 @patch("puddle.puddle._is_file_size_correct", return_value=True)
 @patch("puddle.puddle.Path.open", new_callable=mock_open)
 @patch("puddle.puddle.requests.get")
-def test_download_with_query_paramters(mocked_get, mocked_open, correct_file_size):
+def test_download_with_query_parameters(request, file, correct_file_size):
     # Given
-    mocked_get.return_value = http_ok_with_filename()["response"]
-    query_paramters = {"key": "value"}
+    request.return_value = http_ok_with_filename()["response"]
+    query_parameters = {"key": "value"}
 
     # When
-    download(TEST_URL, query_paramters)
+    download(TEST_URL, query_parameters)
 
     # Then
-    mocked_get.assert_called_once_with(
-        TEST_URL, stream=True, timeout=TIMEOUT, params=query_paramters
+    request.assert_called_once_with(
+        TEST_URL, stream=True, timeout=TIMEOUT_S, params=query_parameters
     )
 
 
 @patch("puddle.puddle._is_file_size_correct", return_value=True)
 @patch("puddle.puddle.requests.get")
-def test_download_with_path_option(mocked_get, correct_file_size):
+def test_download_with_path_option(request, correct_file_size):
     # use a function to mock `open()`,
     # because functions are bound when accessed on instances of `Path`.
     # https://stackoverflow.com/questions/55165313/mock-test-calls-to-path-open
-    opener = mock_open()
+    file_open = mock_open()
 
     def mocked_open(self, *args, **kwargs):
-        return opener(self, *args, **kwargs)
+        return file_open(self, *args, **kwargs)
 
-    # Given
-    mocked_get.return_value = http_ok_with_filename()["response"]
-    download_directory = Path("data")
-    filename = _get_filename_from_url(TEST_URL)
+    def object_called_open() -> str:
+        return str(file_open.call_args.args[0])
+
     with patch.object(Path, "open", mocked_open), patch.object(Path, "mkdir"):
+        # Given
+        request.return_value = http_ok_with_filename()["response"]
+        download_directory = Path("data")
+        filename = _get_filename_from_url(TEST_URL)
+
         # When
         result = download(TEST_URL, download_dir=download_directory)
 
     # Then
-    assert str(opener.call_args.args[0]) == (download_directory / filename).as_posix()
+    assert object_called_open() == (download_directory / filename).as_posix()
     assert result == (download_directory / filename)
 
 
 @patch("puddle.puddle._is_file_size_correct")
 @patch("puddle.puddle.Path.open", new_callable=mock_open)
 @patch("puddle.puddle.requests.get")
-def test_download_file_size_incorrect(mocked_get, mocked_open, is_file_size_correct):
+def test_download_file_size_incorrect(request, file, is_file_size_correct):
     # Given
+    request.return_value = http_ok_with_filename()["response"]
     is_file_size_correct.return_value = False
-    mocked_get.return_value = http_ok_with_filename()["response"]
 
     # Then
     with pytest.raises(DownloadError):
@@ -140,16 +155,17 @@ def test_download_file_size_incorrect(mocked_get, mocked_open, is_file_size_corr
 
 @patch("puddle.puddle.open", new_callable=mock_open)
 @patch("puddle.puddle.requests.get", side_effect=requests.exceptions.RequestException)
-def test_download_exception_during_request(mocked_get, mocked_open):
+def test_download_exception_during_request(request, file_open):
+    # Then
     with pytest.raises(DownloadError):
         # When
         download(TEST_URL)
 
     # Then
-    mocked_get.assert_called_once_with(
-        TEST_URL, stream=True, timeout=TIMEOUT, params=None
+    request.assert_called_once_with(
+        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None
     )
-    mocked_open.assert_not_called()
+    file_open.assert_not_called()
 
 
 def http_file_not_found_response():
@@ -171,7 +187,7 @@ def http_authentication_error_response():
 
 
 @pytest.mark.parametrize(
-    "http_response",
+    "http_error_variant",
     [
         pytest.param(
             http_file_not_found_response(),
@@ -185,18 +201,20 @@ def http_authentication_error_response():
 )
 @patch("puddle.puddle.open", new_callable=mock_open)
 @patch("puddle.puddle.requests.get")
-def test_download_file_with_http_error(mocked_get, mocked_open, http_response):
+def test_download_file_with_http_error(request, file_open, http_error_variant):
     # Given
-    mocked_get.return_value = http_response
+    request.return_value = http_error_variant
+
+    # Then
     with pytest.raises(DownloadError):
         # When
         download(TEST_URL)
 
     # Then
-    mocked_get.assert_called_once_with(
-        TEST_URL, stream=True, timeout=TIMEOUT, params=None
+    request.assert_called_once_with(
+        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None
     )
-    mocked_open.assert_not_called()
+    file_open.assert_not_called()
 
 
 @pytest.mark.parametrize(
@@ -209,7 +227,7 @@ def test_download_file_with_http_error(mocked_get, mocked_open, http_response):
         pytest.param("a.com/download/b.pdf", id="url without scheme"),
     ],
 )
-def test_download_auto_file_naming(url):
+def test_get_file_name_from_url(url):
     # When
     result = _get_filename_from_url(url)
 
