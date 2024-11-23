@@ -10,6 +10,7 @@ from puddle.puddle import (
     DownloadedFile,
     _get_filename_from_url,
     download,
+    download_files_concurrently,
 )
 
 TEST_URL = "test_url/some_file.txt"
@@ -215,3 +216,54 @@ def test_get_file_name_from_url(url):
 
     # Then
     assert result == "b.pdf"
+
+
+@pytest.fixture
+def url_list():
+    template_url = "https://api.worldbank.org/v2/en/indicator/{name}?downloadformat=csv"
+    names = ["file1", "file2", "file3"]
+    urls = [template_url.format(name=name) for name in names]
+
+    return {
+        "urls": urls,
+        "names": names,
+    }
+
+
+download_dummy = lambda url, query_parameters, download_dir: _get_filename_from_url(url)
+
+
+@patch(
+    "puddle.puddle.download",
+    side_effect=download_dummy,
+)
+def test_download_concurrently(mock_download, url_list):
+    # Given
+    urls = url_list["urls"]
+    names = url_list["names"]
+
+    # When
+    result = download_files_concurrently(urls)
+
+    # Then
+    for url in urls:
+        mock_download.assert_any_call(url, query_parameters=None, download_dir=None)
+    assert sorted(result) == sorted(names)
+
+
+@patch("puddle.puddle.download", side_effect=download_dummy)
+def test_download_concurrently_with_options(download, url_list):
+    # Given
+    urls = url_list["urls"]
+    query_parameters = {"key": "value"}
+    download_dir = Path("data")
+
+    # When
+    download_files_concurrently(
+        urls, query_parameters=query_parameters, download_dir=download_dir
+    )
+
+    for url in urls:
+        download.assert_any_call(
+            url, query_parameters=query_parameters, download_dir=download_dir
+        )

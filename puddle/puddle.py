@@ -1,4 +1,6 @@
+import concurrent
 import logging
+from concurrent.futures.thread import ThreadPoolExecutor
 from pathlib import Path
 
 import requests
@@ -106,6 +108,26 @@ def download(
     log.info(f"Downloaded {downloaded_file.path.name} successfully")
 
     return downloaded_file.path
+
+
+def download_files_concurrently(
+    url_list: list[str],
+    query_parameters: dict | None = None,
+    download_dir: Path | None = None,
+    max_workers: int = 5,
+) -> list[Path]:
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [
+            executor.submit(
+                download,
+                url,
+                query_parameters=query_parameters,
+                download_dir=download_dir,
+            )
+            for url in url_list
+        ]
+
+    return [future.result() for future in concurrent.futures.as_completed(futures)]
 
 
 def _get_filename_from_url(url: str) -> str:
