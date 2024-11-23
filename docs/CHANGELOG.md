@@ -38,6 +38,12 @@
 
 ### Other
 
+- :construction_worker: Run PyPi publish when version tag is created
+  ([`81314a2`](https://github.com/8-bit-hunters/pudly/commit/81314a24c0a49855c82ff92cb10efa488f43bc01))
+
+- :memo: Fix testing Github workflow badge
+  ([`7946b17`](https://github.com/8-bit-hunters/pudly/commit/7946b1776a207863a161c8807b7cec9d20d35edf))
+
 - :construction_worker: Only publish to PyPi when release is created
   ([`4737f32`](https://github.com/8-bit-hunters/pudly/commit/4737f32329f4638600fe83bf3910212a05f9c8f4))
 
