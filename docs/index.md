@@ -1,21 +1,113 @@
-# Welcome to MkDocs
+# Python Url Downloader Library 🤷
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+PUDLy is yet another URL downloader for python.
 
-## Commands
+## Goal of the project
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+The goal of this project is to create simple functions to handle file download tasks.
 
-## Project layout
+The two main components of this library are:
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+- [`download()`](http://127.0.0.1:8000/references/#pudly.pudly.download)
+- [`download_files_concurrently()`](http://127.0.0.1:8000/references/#pudly.pudly.download_files_concurrently)
 
-## How to write documentation
+## How to use
 
-[Diátaxis - A systematic approach to technical documentation authoring](https://diataxis.fr/)
+### Downloading one file
+
+The `download` function can be used to download a file from an url. The function returns the downloaded file's path as
+`Path`.
+
+```python
+from pudly.pudly import download
+
+url = "https://databank.worldbank.org/data/download/WDI_CSV.zip"
+file = download(url)
+
+assert file.exists()
+```
+
+It takes optional arguments to specify the download directory or any query parameters for the request.
+
+```python
+from pudly.pudly import download
+from pathlib import Path
+
+url = "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD"
+query_parameters = {"downloadformat": "csv"}
+download_directory = Path("data")
+
+file = download(url, download_dir=download_directory, query_parameters=query_parameters)
+
+assert file.exists()
+
+```
+
+### Downloading multiple files
+
+The `download_files_concurrently` function uses threading to download files in parallel. It returns the list of the
+downloaded file's path.
+
+```python
+from pathlib import Path
+from pudly.pudly import download_files_concurrently
+
+urls = [
+    "https://api.worldbank.org/v2/en/indicator/SP.POP.TOTL?downloadformat=csv",
+    "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadformat=csv",
+    "https://api.worldbank.org/v2/en/indicator/EN.POP.DNST?downloadformat=csv",
+]
+download_dictionary = Path("data")
+
+files = download_files_concurrently(urls, download_dir=download_dictionary)
+
+for file in files:
+    assert file.exists()
+```
+
+!!! note
+
+    `download_dir` and `query_parameters` arguments are used for every URL in the list when downloaded.
+
+## Exception Handling
+
+The library has custom exception type called `DownloadError`. Errors from `requests` are caught and raised as
+`DownloadError`.
+
+The downloaded file is validated at the end of the process by comparing the expected size with the actual one. If the
+sizes are mismatched then `DownloadError` will be raised.
+
+## Logging
+
+The library uses the python logging library. The name of the logger is `log` and can be imported from `pudly.py`.
+
+If you want to enable the logging for the library, you can add a handler to the `log` logger as in the following
+example.
+
+```python
+import logging
+from pudly.pudly import download
+from pudly.pudly import log as pudly_logger
+
+log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+formatter = logging.Formatter(log_format)
+
+console = logging.StreamHandler()
+console.setLevel(logging.DEBUG)
+console.setFormatter(formatter)
+
+pudly_logger.addHandler(console)
+pudly_logger.setLevel(logging.DEBUG)
+
+download("https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadformat=csv")
+```
+
+Output on console:
+
+```shell
+2024-11-23 17:14:21,992 - pudly.pudly - INFO - Download from https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadformat=csv (135117 bytes)
+2024-11-23 17:14:21,992 - pudly.pudly - DEBUG - Start downloading API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip
+2024-11-23 17:14:22,019 - pudly.pudly - DEBUG - API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip downloaded 135117 bytes / 135117 bytes
+2024-11-23 17:14:22,019 - pudly.pudly - DEBUG - Finished downloading API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip
+2024-11-23 17:14:22,020 - pudly.pudly - INFO - Downloaded API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip successfully
+```
