@@ -38,6 +38,9 @@
 
 ### Other
 
+- :construction_worker: Use one workflow for releasing
+  ([`0b5ba08`](https://github.com/8-bit-hunters/pudly/commit/0b5ba08e4023f66cb6c661dd3cafc39b2d5c3699))
+
 - :green_heart: Fix publish trigger issue with PAT
   ([`5f9ff54`](https://github.com/8-bit-hunters/pudly/commit/5f9ff540628e5c26f79d08862d8d82618290f322))
 
