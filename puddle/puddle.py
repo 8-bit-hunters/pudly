@@ -67,7 +67,8 @@ class FileToDownload:
             for chunk in self._connection.iter_content(chunk_size=download_chunk_size):
                 downloaded_size += len(chunk)
                 log.debug(
-                    f"Downloaded {downloaded_size} bytes / {self._total_size} bytes"
+                    f"{self._name} downloaded {downloaded_size} bytes"
+                    f" / {self._total_size} bytes"
                 )
                 f.write(chunk)
         log.debug(f"Finished downloading {self.name}")
