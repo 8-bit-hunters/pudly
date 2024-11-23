@@ -4,8 +4,8 @@ from unittest.mock import create_autospec, mock_open, patch
 import pytest
 import requests
 
-from puddle.exceptions import DownloadError
-from puddle.puddle import (
+from pudly.exceptions import DownloadError
+from pudly.pudly import (
     TIMEOUT_S,
     DownloadedFile,
     _get_filename_from_url,
@@ -61,8 +61,8 @@ def http_ok_with_filename():
 )
 @patch.object(Path, "mkdir")
 @patch.object(DownloadedFile, "size_is_correct")
-@patch("puddle.puddle.open", new_callable=mock_open)
-@patch("puddle.puddle.requests.get")
+@patch("pudly.pudly.open", new_callable=mock_open)
+@patch("pudly.pudly.requests.get")
 def test_download_happy_path(request, open, size_is_correct, mkdir, http_ok_variant):
     # Given
     request.return_value = http_ok_variant["response"]
@@ -86,8 +86,8 @@ def test_download_happy_path(request, open, size_is_correct, mkdir, http_ok_vari
 
 @patch.object(Path, "mkdir")
 @patch.object(DownloadedFile, "size_is_correct", return_value=True)
-@patch("puddle.puddle.open", new_callable=mock_open)
-@patch("puddle.puddle.requests.get")
+@patch("pudly.pudly.open", new_callable=mock_open)
+@patch("pudly.pudly.requests.get")
 def test_download_with_query_parameters(request, file, size_is_correct, ignore_mkdir):
     # Given
     request.return_value = http_ok_with_filename()["response"]
@@ -104,8 +104,8 @@ def test_download_with_query_parameters(request, file, size_is_correct, ignore_m
 
 @patch.object(Path, "mkdir")
 @patch.object(DownloadedFile, "size_is_correct", return_value=True)
-@patch("puddle.puddle.open", new_callable=mock_open)
-@patch("puddle.puddle.requests.get")
+@patch("pudly.pudly.open", new_callable=mock_open)
+@patch("pudly.pudly.requests.get")
 def test_download_with_path_option(request, open, size_is_correct, ignore_mkdir):
     # Given
     request.return_value = http_ok_with_filename()["response"]
@@ -121,8 +121,8 @@ def test_download_with_path_option(request, open, size_is_correct, ignore_mkdir)
 
 
 @patch.object(DownloadedFile, "size_is_correct")
-@patch("puddle.puddle.open", new_callable=mock_open)
-@patch("puddle.puddle.requests.get")
+@patch("pudly.pudly.open", new_callable=mock_open)
+@patch("pudly.pudly.requests.get")
 def test_download_file_size_incorrect(request, file, size_is_correct):
     # Given
     request.return_value = http_ok_with_filename()["response"]
@@ -134,8 +134,8 @@ def test_download_file_size_incorrect(request, file, size_is_correct):
         download(TEST_URL)
 
 
-@patch("puddle.puddle.open", new_callable=mock_open)
-@patch("puddle.puddle.requests.get")
+@patch("pudly.pudly.open", new_callable=mock_open)
+@patch("pudly.pudly.requests.get")
 def test_download_exception_during_request(request, file_open):
     # Given
     request.side_effect = requests.exceptions.RequestException
@@ -182,8 +182,8 @@ def http_authentication_error_response():
         ),
     ],
 )
-@patch("puddle.puddle.open", new_callable=mock_open)
-@patch("puddle.puddle.requests.get")
+@patch("pudly.pudly.open", new_callable=mock_open)
+@patch("pudly.pudly.requests.get")
 def test_download_file_with_http_error(request, file_open, http_error_variant):
     # Given
     request.return_value = http_error_variant
@@ -234,7 +234,7 @@ download_dummy = lambda url, query_parameters, download_dir: _get_filename_from_
 
 
 @patch(
-    "puddle.puddle.download",
+    "pudly.pudly.download",
     side_effect=download_dummy,
 )
 def test_download_concurrently(mock_download, url_list):
@@ -251,7 +251,7 @@ def test_download_concurrently(mock_download, url_list):
     assert sorted(result) == sorted(names)
 
 
-@patch("puddle.puddle.download", side_effect=download_dummy)
+@patch("pudly.pudly.download", side_effect=download_dummy)
 def test_download_concurrently_with_options(download, url_list):
     # Given
     urls = url_list["urls"]

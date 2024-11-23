@@ -5,7 +5,7 @@ from pathlib import Path
 
 import requests
 
-from puddle.exceptions import DownloadError
+from pudly.exceptions import DownloadError
 
 DOWNLOAD_CHUNK_MB = 25
 TIMEOUT_S = 10
