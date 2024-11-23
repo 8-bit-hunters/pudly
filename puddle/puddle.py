@@ -5,9 +5,9 @@ import requests
 
 from puddle.exceptions import DownloadError
 
-DOWNLOAD_CHUNK = 25 * 1024 * 1024  # MB
-
-TIMEOUT = 10
+DOWNLOAD_CHUNK_MB = 25
+TIMEOUT_S = 10
+MEGABYTE_TO_BYTES = 1024 * 1024
 
 log = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ def download(
 ) -> Path:
     try:
         response = requests.get(
-            url, stream=True, timeout=TIMEOUT, params=query_parameters
+            url, stream=True, timeout=TIMEOUT_S, params=query_parameters
         )
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
@@ -39,9 +39,11 @@ def download(
     log.debug(f"File will be saved as {file_name}")
     with file_name.open("wb") as file:
         downloaded_size = 0
-        for chunk in response.iter_content(chunk_size=DOWNLOAD_CHUNK):
+        for chunk in response.iter_content(
+            chunk_size=DOWNLOAD_CHUNK_MB * MEGABYTE_TO_BYTES
+        ):
             downloaded_size += len(chunk)
-            log.debug(f"Downloaded {downloaded_size} Bytes")
+            log.debug(f"Downloaded {downloaded_size} Bytes / {total_size} Bytes")
             file.write(chunk)
 
     if not _is_file_size_correct(file_name, total_size):
