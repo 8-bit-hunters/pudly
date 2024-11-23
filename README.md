@@ -3,7 +3,7 @@
 Python Url Downloader Library 🤷
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/8-bit-hunters/puddle/main.svg)](https://results.pre-commit.ci/latest/github/8-bit-hunters/puddle/main)
-[![pytest](https://github.com/8-bit-hunters/puddle/actions/workflows/testing.yml/badge.svg)](https://github.com/8-bit-hunters/puddle/actions/workflows/testing.yaml)
+[![pytest](https://github.com/8-bit-hunters/pudly/actions/workflows/testing.yaml/badge.svg)](https://github.com/8-bit-hunters/pudly/actions/workflows/testing.yaml)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![gitmoji](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square)](https://gitmoji.dev/)
