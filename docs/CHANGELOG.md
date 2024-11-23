@@ -38,6 +38,9 @@
 
 ### Other
 
+- :green_heart: Fix publish trigger issue with PAT
+  ([`5f9ff54`](https://github.com/8-bit-hunters/pudly/commit/5f9ff540628e5c26f79d08862d8d82618290f322))
+
 - :construction_worker: Run PyPi publish also when release is published
   ([`549653e`](https://github.com/8-bit-hunters/pudly/commit/549653e205db44841c9cd780cf581f55edec7751))
 
