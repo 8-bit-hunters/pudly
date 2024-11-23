@@ -12,6 +12,73 @@ MEGABYTE_TO_BYTES = 1024 * 1024
 log = logging.getLogger(__name__)
 
 
+class DownloadedFile:
+    def __init__(self, path: Path, total_size: int) -> None:
+        self._path = path
+        self._total_size = total_size
+
+    @property
+    def path(self) -> Path:
+        return self._path
+
+    def total_size_in_bytes(self) -> int:
+        return self._total_size
+
+    def size_is_correct(self) -> bool:
+        return self.path.stat().st_size == self._total_size
+
+
+class FileToDownload:
+    def __init__(self, response: requests.Response) -> None:
+        self._total_size = int(response.headers.get("content-length", 0))
+        self._connection = response
+        self._url = self._connection.url
+        self._download_dir = Path()
+        self._name = self._get_name()
+
+    @property
+    def total_size_in_bytes(self) -> int:
+        return self._total_size
+
+    @property
+    def url(self) -> str:
+        return self._url
+
+    @property
+    def name(self) -> Path:
+        return self._name
+
+    @property
+    def download_dir(self) -> Path:
+        return self._download_dir
+
+    @download_dir.setter
+    def download_dir(self, path: Path) -> None:
+        self._download_dir = path
+
+    def download(self, download_chunk_size: int) -> DownloadedFile:
+        self._download_dir.mkdir(parents=True, exist_ok=True)
+        full_path = self._download_dir / self._name
+        with open(full_path, mode="wb") as f:  # noqa: PTH123
+            downloaded_size = 0
+            log.debug(f"Start downloading {self.name}")
+            for chunk in self._connection.iter_content(chunk_size=download_chunk_size):
+                downloaded_size += len(chunk)
+                log.debug(
+                    f"Downloaded {downloaded_size} bytes / {self._total_size} bytes"
+                )
+                f.write(chunk)
+        log.debug(f"Finished downloading {self.name}")
+        return DownloadedFile(full_path, self._total_size)
+
+    def _get_name(self) -> Path:
+        try:
+            name = _get_filename_from_response(self._connection)
+        except (KeyError, IndexError):
+            name = _get_filename_from_url(self._url)
+        return Path(name)
+
+
 def download(
     url: str, query_parameters: dict | None = None, download_dir: Path | None = None
 ) -> Path:
@@ -23,35 +90,22 @@ def download(
     except requests.exceptions.RequestException as e:
         raise DownloadError from e
 
-    total_size = int(response.headers.get("content-length", 0))
+    file = FileToDownload(response)
 
-    log.info(f"Start download from {response.url} ({total_size} bytes)")
-
-    try:
-        file_name = Path(_get_filename_from_response(response))
-    except (IndexError, KeyError):
-        file_name = Path(_get_filename_from_url(url))
+    log.info(f"Download from {file.url} ({file.total_size_in_bytes} bytes)")
 
     if download_dir:
-        download_dir.mkdir(parents=True, exist_ok=True)
-        file_name = download_dir / file_name
+        file.download_dir = download_dir
 
-    log.debug(f"File will be saved as {file_name}")
-    with file_name.open("wb") as file:
-        downloaded_size = 0
-        for chunk in response.iter_content(
-            chunk_size=DOWNLOAD_CHUNK_MB * MEGABYTE_TO_BYTES
-        ):
-            downloaded_size += len(chunk)
-            log.debug(f"Downloaded {downloaded_size} Bytes / {total_size} Bytes")
-            file.write(chunk)
+    downloaded_file = file.download(DOWNLOAD_CHUNK_MB * MEGABYTE_TO_BYTES)
 
-    if not _is_file_size_correct(file_name, total_size):
-        message = "File size corrupted"
+    if not downloaded_file.size_is_correct():
+        message = f"File size corrupted for {downloaded_file.path}"
         raise DownloadError(message)
 
-    log.info(f"Downloaded {file_name}")
-    return Path(file_name)
+    log.info(f"Downloaded {downloaded_file.path.name} successfully")
+
+    return downloaded_file.path
 
 
 def _get_filename_from_url(url: str) -> str:
@@ -64,7 +118,3 @@ def _get_filename_from_url(url: str) -> str:
 def _get_filename_from_response(response: requests.Response) -> str:
     content_disposition = response.headers["content-disposition"]
     return content_disposition.split("filename=")[1]
-
-
-def _is_file_size_correct(file: Path, size: int) -> bool:
-    return file.stat().st_size == size
