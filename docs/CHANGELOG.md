@@ -38,6 +38,9 @@
 
 ### Other
 
+- :construction_worker: Run PyPi publish also when release is published
+  ([`549653e`](https://github.com/8-bit-hunters/pudly/commit/549653e205db44841c9cd780cf581f55edec7751))
+
 - :construction_worker: Run PyPi publish when version tag is created
   ([`81314a2`](https://github.com/8-bit-hunters/pudly/commit/81314a24c0a49855c82ff92cb10efa488f43bc01))
 
