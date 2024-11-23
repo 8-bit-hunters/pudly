@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-from puddle.puddle import download
+from pudly.pudly import download
 
 URL = "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD"
 QUERY_PARAMETERS = {"downloadformat": "csv"}
