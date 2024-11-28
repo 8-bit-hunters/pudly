@@ -1,6 +1,27 @@
 # CHANGELOG
 
 
+## v2.0.0 (2024-11-28)
+
+### :boom:
+
+- :boom: Rename the logger instance to "pudly" and simplify imports
+  ([`97783a1`](https://github.com/8-bit-hunters/pudly/commit/97783a1038c84001c97942dc7db9704b1eaef31e))
+
+### :sparkles:
+
+- :sparkles: Add basic HTTP authentication
+  ([`44a378c`](https://github.com/8-bit-hunters/pudly/commit/44a378cdf6d8eca4569ebfb40b80a28cca281d9b))
+
+### Other
+
+- :pushpin: Run uv lock
+  ([`115d997`](https://github.com/8-bit-hunters/pudly/commit/115d997e6457124df6eeb52c5bf0ba121e06b502))
+
+- :construction_worker: Only build non-development parts in release build with frozen lock
+  ([`a458ea1`](https://github.com/8-bit-hunters/pudly/commit/a458ea1c6d62ffae36ce2ed8be9a5b8cd5801b78))
+
+
 ## v1.0.0 (2024-11-23)
 
 ### :boom:

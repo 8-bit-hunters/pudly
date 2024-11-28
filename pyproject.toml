@@ -1,6 +1,6 @@
 [project]
 name = "pudly"
-version = "1.0.0"
+version = "2.0.0"
 description = "Add your description here"
 authors = [
     { name = "Kristof Kovacs", email = "kristof.kovacs1996@gmail.com" }
