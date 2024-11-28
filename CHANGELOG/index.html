@@ -1,0 +1,534 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.45">
+    
+    
+      
+        <title>CHANGELOG - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CHANGELOG
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#v100-2024-11-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      v1.0.0 (2024-11-23)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.0 (2024-11-23)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v000-2024-11-22" class="md-nav__link">
+    <span class="md-ellipsis">
+      v0.0.0 (2024-11-22)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.0.0 (2024-11-22)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="changelog">CHANGELOG</h1>
+<h2 id="v100-2024-11-23">v1.0.0 (2024-11-23)</h2>
+<h3 id="_1"><img alt="💥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f4a5.svg" title=":boom:" /></h3>
+<ul>
+<li>
+<p><img alt="💥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f4a5.svg" title=":boom:" /> Rename project to PUDLy
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/41e73010a01a928930c424dc848e8b2675df1a35"><code>41e7301</code></a>)</p>
+</li>
+<li>
+<p><img alt="💥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f4a5.svg" title=":boom:" /> Indicate helper functions as private
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/19794cc089abf960f5db8460d5b6c2bcc38dd6ec"><code>19794cc</code></a>)</p>
+</li>
+</ul>
+<h3 id="_2"><img alt="✨" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2728.svg" title=":sparkles:" /></h3>
+<ul>
+<li>
+<p><img alt="✨" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2728.svg" title=":sparkles:" /> Add function to download multiple files concurrently
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/75fa5e188b58d4b995a1b9c09bd06d9682609904"><code>75fa5e1</code></a>)</p>
+</li>
+<li>
+<p><img alt="✨" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2728.svg" title=":sparkles:" /> Raise error if the downloaded file size doesn't match the total size
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/4368dcea054e5e387de6ce8921bcf171366319da"><code>4368dce</code></a>)</p>
+</li>
+<li>
+<p><img alt="✨" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2728.svg" title=":sparkles:" /> Return the path of the downloaded file
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/82c13e167ca583e8977314f284034cadc2a2dc91"><code>82c13e1</code></a>)</p>
+</li>
+<li>
+<p><img alt="✨" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2728.svg" title=":sparkles:" /> Add option to define download directory
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/8ab54835bb93c7299f87a62ad18c62fab1301773"><code>8ab5483</code></a>)</p>
+</li>
+<li>
+<p><img alt="✨" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2728.svg" title=":sparkles:" /> Allow to use query parameters
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/6fe9687947475b4fb7974c0d2040ff46f0ee4cfe"><code>6fe9687</code></a>)</p>
+</li>
+<li>
+<p><img alt="✨" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2728.svg" title=":sparkles:" /> Download file from a given URL
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/34d04274c7f9c46f6db9613cd11367b1a3889a8f"><code>34d0427</code></a>)</p>
+</li>
+</ul>
+<h3 id="_3"><img alt="⚡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a1.svg" title=":zap:" /></h3>
+<ul>
+<li><img alt="⚡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a1.svg" title=":zap:" /> Increase the download chunk size to 25 MB
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/4ebac26187e98303f0bc626168613177f77cdc11"><code>4ebac26</code></a>)</li>
+</ul>
+<h3 id="other">Other</h3>
+<ul>
+<li>
+<p><img alt="👷" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f477.svg" title=":construction_worker:" /> Use one workflow for releasing
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/0b5ba08e4023f66cb6c661dd3cafc39b2d5c3699"><code>0b5ba08</code></a>)</p>
+</li>
+<li>
+<p><img alt="💚" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f49a.svg" title=":green_heart:" /> Fix publish trigger issue with PAT
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/5f9ff540628e5c26f79d08862d8d82618290f322"><code>5f9ff54</code></a>)</p>
+</li>
+<li>
+<p><img alt="👷" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f477.svg" title=":construction_worker:" /> Run PyPi publish also when release is published
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/549653e205db44841c9cd780cf581f55edec7751"><code>549653e</code></a>)</p>
+</li>
+<li>
+<p><img alt="👷" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f477.svg" title=":construction_worker:" /> Run PyPi publish when version tag is created
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/81314a24c0a49855c82ff92cb10efa488f43bc01"><code>81314a2</code></a>)</p>
+</li>
+<li>
+<p><img alt="📝" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f4dd.svg" title=":memo:" /> Fix testing Github workflow badge
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/7946b1776a207863a161c8807b7cec9d20d35edf"><code>7946b17</code></a>)</p>
+</li>
+<li>
+<p><img alt="👷" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f477.svg" title=":construction_worker:" /> Only publish to PyPi when release is created
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/4737f32329f4638600fe83bf3910212a05f9c8f4"><code>4737f32</code></a>)</p>
+</li>
+<li>
+<p><img alt="💚" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f49a.svg" title=":green_heart:" /> Fix build failure
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/6f6bac52d934f441a2fb53e9805eda528ef87838"><code>6f6bac5</code></a>)</p>
+</li>
+<li>
+<p><img alt="👷" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f477.svg" title=":construction_worker:" /> Add publish link for PyPi
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/7f5c13ce54d5ffd7f889c81125cd5d35f2ce7c67"><code>7f5c13c</code></a>)</p>
+</li>
+<li>
+<p><img alt="📝" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f4dd.svg" title=":memo:" /> Add documentation for the code
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/771837f115bf64a13ca1847b90812d754b03b91c"><code>771837f</code></a>)</p>
+</li>
+<li>
+<p><img alt="➕" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2795.svg" title=":heavy_plus_sign:" /> Add development dependencies to create mkdocs page
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/94e2b978bf75ad0c124029666235ff173cc6f23d"><code>94e2b97</code></a>)</p>
+</li>
+<li>
+<p><img alt="🔧" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f527.svg" title=":wrench:" /> Add project links to pyproject.toml
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/82eef3a0a7cf44e03169f45d51b8e4f84682f67b"><code>82eef3a</code></a>)</p>
+</li>
+<li>
+<p><img alt="📝" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f4dd.svg" title=":memo:" /> Update README
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/b3b5ea20dd217315c9aec39de716ddc9457c62dc"><code>b3b5ea2</code></a>)</p>
+</li>
+<li>
+<p><img alt="💡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f4a1.svg" title=":bulb:" /> Document library elements with docstrings.
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/66765d8a8aa43f5a92edf8c1370d3c60108685f0"><code>66765d8</code></a>)</p>
+</li>
+<li>
+<p><img alt="🔊" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f50a.svg" title=":loud_sound:" /> Show the file name in download progress logs
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/cd868940f011aa34cc2add14772e5da491dde17b"><code>cd86894</code></a>)</p>
+</li>
+<li>
+<p><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2705.svg" title=":white_check_mark:" /> Add test to check download function end-to-end
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/8a817f1b09d68b1e2fe7901bd846e00e5b7cfeb6"><code>8a817f1</code></a>)</p>
+</li>
+<li>
+<p><img alt="♻" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/267b.svg" title=":recycle:" /> Use classes to represent downloaded file in different stages
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/bce81d8cd8930fc98d9e4e91cf961a47da34f28b"><code>bce81d8</code></a>)</p>
+</li>
+<li>
+<p><img alt="♻" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/267b.svg" title=":recycle:" /> Refactor code for readability
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/b16f14ebbd85f7fcf813f288ffb6b7fdf71b0860"><code>b16f14e</code></a>)</p>
+</li>
+<li>
+<p><img alt="⚰" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26b0.svg" title=":coffin:" /> Remove pydantic model definitions
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/9ae6ca1332f4a9d77afa2ef55491eb829eb33b58"><code>9ae6ca1</code></a>)</p>
+</li>
+<li>
+<p><img alt="♻" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/267b.svg" title=":recycle:" /> Use Path type for open the file
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/aba645831932d65b0feab03a14cf1dc11699655b"><code>aba6458</code></a>)</p>
+</li>
+<li>
+<p><img alt="➕" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2795.svg" title=":heavy_plus_sign:" /> Add requests as dependency
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/31e8d3606f6c120345e1294270a1ab72955b8ce1"><code>31e8d36</code></a>)</p>
+</li>
+<li>
+<p><img alt="🔧" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f527.svg" title=":wrench:" /> Change project name and add author
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/fb326dd0ab1937d0e2b477d36f32c99d2ec41f36"><code>fb326dd</code></a>)</p>
+</li>
+</ul>
+<h2 id="v000-2024-11-22">v0.0.0 (2024-11-22)</h2>
+<h3 id="other_1">Other</h3>
+<ul>
+<li>Initial commit
+  (<a href="https://github.com/8-bit-hunters/pudly/commit/1886c5027a026c71d5fef50ef28cd32d122fd16e"><code>1886c50</code></a>)</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+      
+    
+  </body>
+</html>
