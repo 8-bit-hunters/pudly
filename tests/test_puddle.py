@@ -4,6 +4,7 @@ from unittest.mock import create_autospec, mock_open, patch
 import pytest
 import requests
 
+from pudly import HTTPBasicAuth
 from pudly.exceptions import DownloadError
 from pudly.pudly import (
     TIMEOUT_S,
@@ -75,7 +76,7 @@ def test_download_happy_path(request, open, size_is_correct, mkdir, http_ok_vari
 
     # Then
     request.assert_called_once_with(
-        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None
+        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None, auth=None
     )
     open.assert_called_once_with(PosixPath(filename), mode="wb")
     for index, chunk in enumerate(content):
@@ -98,7 +99,7 @@ def test_download_with_query_parameters(request, file, size_is_correct, ignore_m
 
     # Then
     request.assert_called_once_with(
-        TEST_URL, stream=True, timeout=TIMEOUT_S, params=query_parameters
+        TEST_URL, stream=True, timeout=TIMEOUT_S, params=query_parameters, auth=None
     )
 
 
@@ -118,6 +119,23 @@ def test_download_with_path_option(request, open, size_is_correct, ignore_mkdir)
     # Then
     open.assert_called_once_with(PosixPath(download_directory / filename), mode="wb")
     assert result == (download_directory / filename)
+
+
+@patch.object(Path, "mkdir")
+@patch.object(DownloadedFile, "size_is_correct", return_value=True)
+@patch("pudly.pudly.open", new_callable=mock_open)
+@patch("pudly.pudly.requests.get", return_value=http_ok_with_filename()["response"])
+def test_download_with_auth_option(request, file, size_is_correct, ignore_mkdir):
+    # Given
+    login_info = HTTPBasicAuth("user", "password")
+
+    # When
+    download(TEST_URL, auth=login_info)
+
+    # Then
+    request.assert_called_once_with(
+        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None, auth=login_info
+    )
 
 
 @patch.object(DownloadedFile, "size_is_correct")
@@ -146,7 +164,7 @@ def test_download_exception_during_request(request, file_open):
 
     # Then
     request.assert_called_once_with(
-        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None
+        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None, auth=None
     )
     file_open.assert_not_called()
 
@@ -195,7 +213,7 @@ def test_download_file_with_http_error(request, file_open, http_error_variant):
 
     # Then
     request.assert_called_once_with(
-        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None
+        TEST_URL, stream=True, timeout=TIMEOUT_S, params=None, auth=None
     )
     file_open.assert_not_called()
 
@@ -230,7 +248,9 @@ def url_list():
     }
 
 
-download_dummy = lambda url, query_parameters, download_dir: _get_filename_from_url(url)
+download_dummy = (
+    lambda url, query_parameters, download_dir, auth: _get_filename_from_url(url)
+)
 
 
 @patch(
@@ -247,7 +267,9 @@ def test_download_concurrently(mock_download, url_list):
 
     # Then
     for url in urls:
-        mock_download.assert_any_call(url, query_parameters=None, download_dir=None)
+        mock_download.assert_any_call(
+            url, query_parameters=None, download_dir=None, auth=None
+        )
     assert sorted(result) == sorted(names)
 
 
@@ -265,5 +287,5 @@ def test_download_concurrently_with_options(download, url_list):
 
     for url in urls:
         download.assert_any_call(
-            url, query_parameters=query_parameters, download_dir=download_dir
+            url, query_parameters=query_parameters, download_dir=download_dir, auth=None
         )
