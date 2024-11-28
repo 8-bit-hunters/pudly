@@ -19,7 +19,7 @@ The `download` function can be used to download a file from an url. The function
 `Path`.
 
 ```python
-from pudly.pudly import download
+from pudly import download
 
 url = "https://databank.worldbank.org/data/download/WDI_CSV.zip"
 file = download(url)
@@ -30,7 +30,7 @@ assert file.exists()
 It takes optional arguments to specify the download directory or any query parameters for the request.
 
 ```python
-from pudly.pudly import download
+from pudly import download
 from pathlib import Path
 
 url = "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD"
@@ -50,7 +50,7 @@ downloaded file's path.
 
 ```python
 from pathlib import Path
-from pudly.pudly import download_files_concurrently
+from pudly import download_files_concurrently
 
 urls = [
     "https://api.worldbank.org/v2/en/indicator/SP.POP.TOTL?downloadformat=csv",
@@ -79,15 +79,31 @@ sizes are mismatched then `DownloadError` will be raised.
 
 ## Logging
 
-The library uses the python logging library. The name of the logger is `log` and can be imported from `pudly.py`.
+The library uses the python logging library. The name of the logger is `pudly` and can be accessed by importing it or
+calling the `logging.getLogger()` function.
+
+### Importing
+
+```python
+from pudly import logger as pudly_logger
+```
+
+### getLogger
+
+```python
+import logging
+pudly_logger = logging.getLogger("pudly")
+```
+
+### Configuration
 
 If you want to enable the logging for the library, you can add a handler to the `log` logger as in the following
 example.
 
 ```python
 import logging
-from pudly.pudly import download
-from pudly.pudly import log as pudly_logger
+from pudly import download
+from pudly import logger as pudly_logger
 
 log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 formatter = logging.Formatter(log_format)
@@ -105,9 +121,9 @@ download("https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadforma
 Output on console:
 
 ```shell
-2024-11-23 17:14:21,992 - pudly.pudly - INFO - Download from https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadformat=csv (135117 bytes)
-2024-11-23 17:14:21,992 - pudly.pudly - DEBUG - Start downloading API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip
-2024-11-23 17:14:22,019 - pudly.pudly - DEBUG - API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip downloaded 135117 bytes / 135117 bytes
-2024-11-23 17:14:22,019 - pudly.pudly - DEBUG - Finished downloading API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip
-2024-11-23 17:14:22,020 - pudly.pudly - INFO - Downloaded API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip successfully
+2024-11-23 17:14:21,992 - pudly - INFO - Download from https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadformat=csv (135117 bytes)
+2024-11-23 17:14:21,992 - pudly - DEBUG - Start downloading API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip
+2024-11-23 17:14:22,019 - pudly - DEBUG - API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip downloaded 135117 bytes / 135117 bytes
+2024-11-23 17:14:22,019 - pudly - DEBUG - Finished downloading API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip
+2024-11-23 17:14:22,020 - pudly - INFO - Downloaded API_NY.GDP.MKTP.CD_DS2_en_csv_v2_2.zip successfully
 ```
