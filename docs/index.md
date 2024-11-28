@@ -69,6 +69,29 @@ for file in files:
 
     `download_dir` and `query_parameters` arguments are used for every URL in the list when downloaded.
 
+## Authentication
+
+Currently, the following option are available for authentication for webservers that requires it.
+
+### Basic authentication
+
+This is the simplest kind of authentication method for web services. You have to create a `HTTPBasicAuth` instance with
+your credentials, then pass it as an argument to the `download` function.
+
+```python
+from pudly import download, HTTPBasicAuth
+
+credential = HTTPBasicAuth("username", "password")
+download("https://www.myurl.com/download", auth=credential)
+```
+
+### netrc authentication
+
+If no authentication method is given with the `auth` argument, `pudly` will attempt to get the authentication
+credentials for the URL's hostname from the user's `netrc` file.
+
+!!! info "[Documentation of the `netrc` file](https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html)"
+
 ## Exception Handling
 
 The library has custom exception type called `DownloadError`. Errors from `requests` are caught and raised as
@@ -92,6 +115,7 @@ from pudly import logger as pudly_logger
 
 ```python
 import logging
+
 pudly_logger = logging.getLogger("pudly")
 ```
 

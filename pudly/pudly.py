@@ -4,6 +4,7 @@ from concurrent.futures.thread import ThreadPoolExecutor
 from pathlib import Path
 
 import requests
+from requests.auth import HTTPBasicAuth
 
 from pudly.exceptions import DownloadError
 
@@ -126,7 +127,10 @@ class FileToDownload:
 
 
 def download(
-    url: str, query_parameters: dict | None = None, download_dir: Path | None = None
+    url: str,
+    query_parameters: dict | None = None,
+    download_dir: Path | None = None,
+    auth: HTTPBasicAuth | None = None,
 ) -> Path:
     """
     Download the file from the URL.
@@ -144,7 +148,7 @@ def download(
     """
     try:
         response = requests.get(
-            url, stream=True, timeout=TIMEOUT_S, params=query_parameters
+            url, stream=True, timeout=TIMEOUT_S, params=query_parameters, auth=auth
         )
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
@@ -172,6 +176,7 @@ def download_files_concurrently(
     url_list: list[str],
     query_parameters: dict | None = None,
     download_dir: Path | None = None,
+    auth: HTTPBasicAuth | None = None,
     max_workers: int = 5,
 ) -> list[Path]:
     """
@@ -193,6 +198,7 @@ def download_files_concurrently(
                 url,
                 query_parameters=query_parameters,
                 download_dir=download_dir,
+                auth=auth,
             )
             for url in url_list
         ]
