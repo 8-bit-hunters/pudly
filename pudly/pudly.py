@@ -11,7 +11,7 @@ DOWNLOAD_CHUNK_MB = 25
 TIMEOUT_S = 10
 MEGABYTE_TO_BYTES = 1024 * 1024
 
-log = logging.getLogger(__name__)
+logger = logging.getLogger("pudly")
 
 
 class DownloadedFile:
@@ -106,15 +106,15 @@ class FileToDownload:
         full_path = self._download_dir / self._name
         with open(full_path, mode="wb") as f:  # noqa: PTH123
             downloaded_size = 0
-            log.debug(f"Start downloading {self.name}")
+            logger.debug(f"Start downloading {self.name}")
             for chunk in self._connection.iter_content(chunk_size=download_chunk_size):
                 downloaded_size += len(chunk)
-                log.debug(
+                logger.debug(
                     f"{self._name} downloaded {downloaded_size} bytes"
                     f" / {self._total_size} bytes"
                 )
                 f.write(chunk)
-        log.debug(f"Finished downloading {self.name}")
+        logger.debug(f"Finished downloading {self.name}")
         return DownloadedFile(full_path, self._total_size)
 
     def _get_name(self) -> Path:
@@ -152,7 +152,7 @@ def download(
 
     file = FileToDownload(response)
 
-    log.info(f"Download from {file.url} ({file.total_size_in_bytes} bytes)")
+    logger.info(f"Download from {file.url} ({file.total_size_in_bytes} bytes)")
 
     if download_dir:
         file.download_dir = download_dir
@@ -163,7 +163,7 @@ def download(
         message = f"File size corrupted for {downloaded_file.path}"
         raise DownloadError(message)
 
-    log.info(f"Downloaded {downloaded_file.path.name} successfully")
+    logger.info(f"Downloaded {downloaded_file.path.name} successfully")
 
     return downloaded_file.path
 
