@@ -248,8 +248,8 @@ def url_list():
     }
 
 
-download_dummy = (
-    lambda url, query_parameters, download_dir, auth: _get_filename_from_url(url)
+download_dummy = lambda url, query_parameters, download_dir, auth: (
+    _get_filename_from_url(url)
 )
 
 
