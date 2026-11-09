@@ -40,7 +40,6 @@ download_directory = Path("data")
 file = download(url, download_dir=download_directory, query_parameters=query_parameters)
 
 assert file.exists()
-
 ```
 
 ### Downloading multiple files
