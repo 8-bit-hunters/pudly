@@ -207,7 +207,7 @@ def download_files_concurrently(
 
 
 def _get_filename_from_url(url: str) -> str:
-    fragment_removed = url.split("#")[0]
+    fragment_removed = url.split("#", maxsplit=1)[0]
     query_string_removed = fragment_removed.split("?")[0]
     scheme_removed = query_string_removed.split("://")[-1].split(":")[-1]
     return scheme_removed.split("/")[-1]
